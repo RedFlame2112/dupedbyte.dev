@@ -69,49 +69,82 @@ const email = "sagnikchakraborty212@gmail.com";
     <div class="pointer-events-none absolute inset-x-0 top-[-180px] z-0 h-[420px] bg-[radial-gradient(circle_at_50%_50%,rgba(63,164,106,0.22),rgba(12,24,19,0)_55%)] blur-3xl" />
 
     <header class="sticky top-0 z-40 border-b border-[var(--border)]/60 bg-[var(--bg)]/85 backdrop-blur">
-      <div class="mx-auto flex max-w-6xl items-center gap-4 px-6 py-4">
+      <div class="relative mx-auto flex max-w-6xl items-center gap-4 px-6 py-4">
         <a href="/" class="flex items-center gap-3 text-lg font-semibold tracking-tight">
           <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--card)] shadow-glow">
-            <img src="/logo.svg" alt="DupedByte logo" class="h-9 w-9" width="36" height="36" loading="eager" fetchpriority="high" />
+            <img src="/logo.svg" alt="DupedByte logo" class="h-9 w-9" width="36" height="36" loading="lazy" decoding="async" />
           </span>
           <span class="hidden sm:block">DupedByte</span>
         </a>
-        <nav class="ml-auto hidden items-center gap-4 text-sm font-medium uppercase tracking-[0.08em] md:flex">
+        <div class="ml-auto flex items-center gap-3">
+          <nav class="hidden items-center gap-4 text-sm font-medium uppercase tracking-[0.08em] md:flex">
+            {navLinks.map((link) => (
+              <a
+                href={link.href}
+                class:list={[
+                  "rounded-full px-3 py-1.5 transition-colors hover:bg-[var(--card)] hover:text-[var(--accent)]",
+                  pathname === link.href || pathname.startsWith(`${link.href}/`) ? "bg-[var(--card)] text-[var(--accent)]" : "text-[var(--muted)]"
+                ]}
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+          <div class="flex items-center gap-3" data-theme-toggle-wrapper>
+            <button
+              type="button"
+              class="relative inline-flex h-10 w-16 items-center overflow-hidden rounded-full border border-[var(--border)] bg-[var(--card)] px-1 text-sm font-semibold text-[var(--text)] shadow-card transition hover:-translate-y-0.5 hover:border-[var(--accent)]"
+              aria-label="Toggle theme"
+              data-theme-toggle
+            >
+              <span class="absolute inset-y-1 left-1 inline-flex w-8 items-center justify-center rounded-full bg-[var(--bg)] transition-all duration-200 will-change-transform" data-theme-thumb data-icon="🌙" aria-hidden="true"></span>
+            </button>
+            <a
+              href="/resume.pdf"
+              download
+              class="hidden rounded-full border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-sm font-semibold text-[var(--text)] shadow-card transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:text-[var(--accent)] md:inline-flex"
+            >
+              Download Resume
+            </a>
+            <a
+              href={`mailto:${email}`}
+              class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--bg)] shadow-glow transition hover:scale-105 focus:outline-none"
+              aria-label="Email Sagnik Chakraborty"
+            >
+              @
+            </a>
+          </div>
+          <button
+            type="button"
+            class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--text)] shadow-card transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:text-[var(--accent)] md:hidden"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="mobile-nav-menu"
+            data-mobile-nav-toggle
+          >
+            <span class="flex flex-col items-center justify-center gap-1.5">
+              <span class="block h-0.5 w-5 rounded-full bg-current" />
+              <span class="block h-0.5 w-5 rounded-full bg-current" />
+              <span class="block h-0.5 w-5 rounded-full bg-current" />
+            </span>
+          </button>
+        </div>
+        <div
+          id="mobile-nav-menu"
+          class="absolute right-6 top-[calc(100%+0.75rem)] w-56 rounded-2xl border border-[var(--border)] bg-[var(--card)]/95 p-2 shadow-card backdrop-blur transition duration-150 md:hidden hidden"
+          data-mobile-nav-menu
+        >
           {navLinks.map((link) => (
             <a
               href={link.href}
               class:list={[
-                "rounded-full px-3 py-1.5 transition-colors hover:bg-[var(--card)] hover:text-[var(--accent)]",
-                pathname === link.href || pathname.startsWith(`${link.href}/`) ? "bg-[var(--card)] text-[var(--accent)]" : "text-[var(--muted)]"
+                "block rounded-xl px-4 py-2 text-sm font-semibold transition hover:bg-[var(--panel)] hover:text-[var(--accent)]",
+                pathname === link.href || pathname.startsWith(`${link.href}/`) ? "bg-[var(--panel)] text-[var(--accent)]" : "text-[var(--muted)]"
               ]}
             >
               {link.label}
             </a>
           ))}
-        </nav>
-        <div class="flex items-center gap-3" data-theme-toggle-wrapper>
-          <button
-            type="button"
-            class="relative inline-flex h-10 w-16 items-center overflow-hidden rounded-full border border-[var(--border)] bg-[var(--card)] px-1 text-sm font-semibold text-[var(--text)] shadow-card transition hover:-translate-y-0.5 hover:border-[var(--accent)]"
-            aria-label="Toggle theme"
-            data-theme-toggle
-          >
-            <span class="absolute inset-y-1 left-1 inline-flex w-8 items-center justify-center rounded-full bg-[var(--bg)] transition-all duration-200 will-change-transform" data-theme-thumb data-icon="🌙" aria-hidden="true"></span>
-          </button>
-          <a
-            href="/resume.pdf"
-            download
-            class="hidden rounded-full border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-sm font-semibold text-[var(--text)] shadow-card transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:text-[var(--accent)] md:inline-flex"
-          >
-            Download Resume
-          </a>
-          <a
-            href={`mailto:${email}`}
-            class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--bg)] shadow-glow transition hover:scale-105 focus:outline-none"
-            aria-label="Email Sagnik Chakraborty"
-          >
-            @
-          </a>
         </div>
       </div>
     </header>
@@ -128,7 +161,7 @@ const email = "sagnikchakraborty212@gmail.com";
           </span>
           <div>
             <p class="text-base font-semibold text-[var(--text)]">DupedByte</p>
-            <p>Building, learning, and sharing from dupedbyte.dev</p>
+            <p>With ❤️ from dupedbyte.dev</p>
           </div>
         </div>
         <div class="flex flex-wrap items-center gap-3">
@@ -191,6 +224,45 @@ const email = "sagnikchakraborty212@gmail.com";
         const toggleBtn = document.querySelector('[data-theme-toggle]') as HTMLElement | null;
         const thumb = document.querySelector('[data-theme-thumb]') as HTMLElement | null;
         const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        const mobileToggle = document.querySelector('[data-mobile-nav-toggle]') as HTMLElement | null;
+        const mobileMenu = document.querySelector('[data-mobile-nav-menu]') as HTMLElement | null;
+
+        const setMobileMenuState = (open: boolean) => {
+          if (!mobileMenu) return;
+          mobileMenu.classList.toggle('hidden', !open);
+          mobileToggle?.setAttribute('aria-expanded', open ? 'true' : 'false');
+        };
+
+        if (mobileToggle && mobileMenu) {
+          mobileToggle.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const isOpen = !mobileMenu.classList.contains('hidden');
+            setMobileMenuState(!isOpen);
+          });
+
+          document.addEventListener('click', (event) => {
+            if (mobileMenu.classList.contains('hidden')) return;
+            if (mobileMenu.contains(event.target as Node) || mobileToggle.contains(event.target as Node)) return;
+            setMobileMenuState(false);
+          });
+
+          document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+              setMobileMenuState(false);
+            }
+          });
+
+          mobileMenu.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => setMobileMenuState(false));
+          });
+
+          const mdQuery = window.matchMedia('(min-width: 768px)');
+          mdQuery.addEventListener('change', (event) => {
+            if (event.matches) {
+              setMobileMenuState(false);
+            }
+          });
+        }
 
         const setTheme = (mode: string, { persist = true } = {}) => {
           const target = mode === 'light' ? 'light' : mode === 'ldm' ? 'ldm' : 'dark';
