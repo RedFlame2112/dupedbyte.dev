@@ -204,7 +204,9 @@ button:focus-visible {
 }
 
 .blog-prose {
-  color: var(--muted);
+  --blog-prose-body: var(--text);
+  --blog-prose-subtle: color-mix(in oklab, var(--text) 60%, var(--muted));
+  color: var(--blog-prose-body);
   line-height: 1.7;
 }
 
@@ -233,7 +235,7 @@ button:focus-visible {
 
 .blog-prose p {
   margin: 0.2em 0 1em;
-  color: #cfe3d7;
+  color: var(--blog-prose-body);
 }
 
 .blog-prose strong {
@@ -477,7 +479,7 @@ button:focus-visible {
 .blog-prose blockquote {
   border-left: 3px solid var(--accent);
   padding-left: 1em;
-  color: #c0d8c9;
+  color: var(--blog-prose-body);
   background: rgba(16, 39, 27, 0.35);
   border-radius: 0.75rem;
   padding: 0.75rem 1rem;
@@ -505,7 +507,7 @@ button:focus-visible {
 .blog-prose figcaption {
   margin-top: 0.6rem;
   text-align: center;
-  color: var(--muted);
+  color: var(--blog-prose-subtle);
   font-size: 0.95rem;
 }
 
@@ -598,7 +600,7 @@ button:focus-visible {
 
 .blog-prose .callout-content {
   margin: 0;
-  color: #cfe3d7;
+  color: var(--blog-prose-body);
 }
 
 .blog-prose .callout-note { border-color: #38bdf8; }
@@ -612,6 +614,28 @@ button:focus-visible {
 .blog-prose .callout-important .callout-title { color: #d8b4fe; }
 .blog-prose .callout-warning .callout-title { color: #fcd34d; }
 .blog-prose .callout-caution .callout-title { color: #fca5a5; }
+
+[data-theme="light"] .blog-prose blockquote {
+  background: color-mix(in oklab, var(--accent) 10%, white);
+  border-color: color-mix(in oklab, var(--accent) 65%, var(--border));
+}
+
+[data-theme="light"] .blog-prose .callout {
+  background: linear-gradient(150deg, color-mix(in oklab, var(--card) 65%, white), color-mix(in oklab, var(--panel) 55%, white));
+  border-color: color-mix(in oklab, var(--border) 70%, white);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+  color: var(--text);
+}
+
+[data-theme="light"] .blog-prose .callout-title {
+  color: var(--text);
+}
+
+[data-theme="light"] .blog-prose .callout-note .callout-title { color: color-mix(in oklab, #38bdf8 90%, var(--text)); }
+[data-theme="light"] .blog-prose .callout-tip .callout-title { color: color-mix(in oklab, var(--accent) 90%, var(--text)); }
+[data-theme="light"] .blog-prose .callout-important .callout-title { color: color-mix(in oklab, #a855f7 90%, var(--text)); }
+[data-theme="light"] .blog-prose .callout-warning .callout-title { color: color-mix(in oklab, #f59e0b 90%, var(--text)); }
+[data-theme="light"] .blog-prose .callout-caution .callout-title { color: color-mix(in oklab, #ef4444 90%, var(--text)); }
 
 .glass {
   background: linear-gradient(145deg, rgba(15, 31, 23, 0.82), rgba(10, 24, 18, 0.82));
