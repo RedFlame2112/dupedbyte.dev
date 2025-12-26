@@ -19,48 +19,16 @@ try {
     process.exit(0);
   }
 
-  const needed = [
-    '/_pagefind/pagefind-entry.json',
-    '/_pagefind/pagefind-highlight.js',
-    '/_pagefind/pagefind-modular-ui.css',
-    '/_pagefind/pagefind-modular-ui.js',
-    '/_pagefind/pagefind-ui.css',
-    '/_pagefind/pagefind-ui.js',
-    '/_pagefind/pagefind.js',
-    '/_pagefind/wasm.en.pagefind',
-    '/_pagefind/wasm.unknown.pagefind'
-  ];
-
-  // Also ensure index/filter/fragment catch-alls are excluded from the worker
-  const prefixes = [
-    '/_pagefind/filter/',
-    '/_pagefind/index/',
-    '/_pagefind/fragment/'
-  ];
-
-  const excludeSet = new Set(data.exclude);
-  let added = 0;
-
-  needed.forEach((item) => {
-    if (!excludeSet.has(item)) {
-      excludeSet.add(item);
-      added += 1;
-    }
-  });
-
-  prefixes.forEach((prefix) => {
-    // If there is no explicit prefix entry, add one.
-    const hasPrefix = [...excludeSet].some((entry) => entry.startsWith(prefix));
-    if (!hasPrefix) {
-      excludeSet.add(`${prefix}*`);
-      added += 1;
-    }
-  });
+  // Cloudflare rejects overlapping rules, so we collapse to a single wildcard.
+  const excludeSet = new Set(
+    data.exclude.filter((entry) => !entry.startsWith('/_pagefind/'))
+  );
+  excludeSet.add('/_pagefind/*');
 
   data.exclude = [...excludeSet];
 
   writeFileSync(routesPath, JSON.stringify(data, null, 2));
-  console.log(`[fix-routes] Ensured _pagefind assets are excluded from the worker (added ${added} entries if missing)`);
+  console.log('[fix-routes] Ensured _pagefind assets bypass the worker via /_pagefind/* rule');
 } catch (error) {
   console.error('[fix-routes] Failed to adjust _routes.json', error);
   process.exit(1);
