@@ -17,12 +17,10 @@
     "@astrojs/sitemap": "^3.6.0",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.6",
+    "pagefind": "^1.4.0",
     "rehype-callouts": "^1.0.2",
     "rehype-katex": "^7.0.0",
     "remark-math": "^6.0.0",
     "tailwindcss": "^4.1.18"
-  },
-  "devDependencies": {
-    "pagefind": "^1.4.0"
   }
 }

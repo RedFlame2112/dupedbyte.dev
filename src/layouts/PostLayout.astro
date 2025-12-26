@@ -61,7 +61,7 @@ const difficultyTone = (score: number) => {
           <span class={`h-2 w-2 rounded-full ${difficultyTone(difficulty)}`} />
           <span>Difficulty {difficulty}/5 - {difficultyLabel(difficulty)}</span>
         </span>
-        {tags.map((tag) => (
+        {tags.map((tag: string) => (
           <a
             href={`/blog/tag/${tag.toLowerCase()}`}
             class={`rounded-full border px-3 py-1 text-[var(--text)] transition hover:scale-105 bg-gradient-to-r ${tagStyle(tag)}`}
@@ -82,7 +82,7 @@ const difficultyTone = (score: number) => {
       <span data-pagefind-sort={`difficulty:${difficulty}`}></span>
       <span data-pagefind-filter={`difficulty:${difficulty}`}></span>
       <span data-pagefind-filter={`year:${new Date(pubDate).getFullYear()}`}></span>
-      {tags.map((tag) => (
+      {tags.map((tag: string) => (
         <span data-pagefind-filter={`tag:${tag.toLowerCase()}`}></span>
       ))}
     </div>
