@@ -8,7 +8,8 @@
     "preview": "astro preview --host",
     "astro": "astro",
     "dev:net": "npm run build && npx pagefind --site dist --output-path public/_pagefind && astro dev --host --port 3000",
-    "dev:prod": "npm run build && npx wrangler pages dev dist"
+    "dev:prod": "npm run build && npx wrangler pages dev dist",
+    "deploy": "npm run build && npx wrangler pages deploy dist --project-name dupedbyte-dev"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
