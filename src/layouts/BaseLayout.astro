@@ -1,0 +1,473 @@
+﻿---
+import "../styles/global.css";
+import "katex/dist/katex.min.css";
+
+type Props = {
+  title?: string;
+  description?: string;
+  withTopPad?: boolean;
+};
+
+const {
+  title = "Sagnik Chakraborty â€” Engineer",
+  description = "Building resilient systems, thoughtful interfaces, and writing about what I learn.",
+  withTopPad = true
+} = Astro.props as Props;
+
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/projects", label: "Projects" },
+  { href: "/blog", label: "Blog" },
+  { href: "/about", label: "About" },
+  { href: "/resume", label: "Resume" }
+];
+
+const pathname = Astro.url?.pathname ?? "";
+const email = "sagnikchakraborty212@gmail.com";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0f1d17" />
+    <link rel="icon" href="/logo.svg" />
+    <script>
+      (() => {
+        const stored = localStorage.getItem('theme');
+        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        const navEntry = performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+        const isReload = navEntry ? (navEntry as PerformanceNavigationTiming).type === 'reload' : performance.navigation ? performance.navigation.type === 1 : false;
+
+        let theme = stored || (prefersLight ? 'light' : 'dark');
+
+        if (stored === 'ldm' && isReload) {
+          const fallback = localStorage.getItem('theme:previous') || (prefersLight ? 'light' : 'dark');
+          localStorage.setItem('theme', fallback);
+          theme = fallback;
+          localStorage.removeItem('theme:previous');
+        }
+
+        if (theme === 'light' || theme === 'ldm') {
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+        document.documentElement.dataset.themeReady = 'true';
+      })();
+    </script>
+  </head>
+  <body class="relative bg-[var(--bg)] text-[var(--text)] antialiased">
+    <a
+      href="#content"
+      class="absolute left-4 top-4 z-[999] -translate-y-20 rounded-full bg-[var(--card)] px-4 py-2 text-sm font-semibold text-[var(--text)] shadow-card transition focus:translate-y-0 focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
+    >
+      Skip to content
+    </a>
+
+    <div class="pointer-events-none absolute inset-x-0 top-[-180px] z-0 h-[420px] bg-[radial-gradient(circle_at_50%_50%,rgba(63,164,106,0.22),rgba(12,24,19,0)_55%)] blur-3xl" />
+
+    <header class="sticky top-0 z-40 border-b border-[var(--border)]/60 bg-[var(--bg)]/85 backdrop-blur">
+      <div class="mx-auto flex max-w-6xl items-center gap-4 px-6 py-4">
+        <a href="/" class="flex items-center gap-3 text-lg font-semibold tracking-tight">
+          <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--card)] shadow-glow">
+            <img src="/logo.svg" alt="DupedByte logo" class="h-9 w-9" width="36" height="36" loading="eager" fetchpriority="high" />
+          </span>
+          <span class="hidden sm:block">DupedByte</span>
+        </a>
+        <nav class="ml-auto hidden items-center gap-4 text-sm font-medium uppercase tracking-[0.08em] md:flex">
+          {navLinks.map((link) => (
+            <a
+              href={link.href}
+              class:list={[
+                "rounded-full px-3 py-1.5 transition-colors hover:bg-[var(--card)] hover:text-[var(--accent)]",
+                pathname === link.href || pathname.startsWith(`${link.href}/`) ? "bg-[var(--card)] text-[var(--accent)]" : "text-[var(--muted)]"
+              ]}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+        <div class="flex items-center gap-3" data-theme-toggle-wrapper>
+          <button
+            type="button"
+            class="relative inline-flex h-10 w-16 items-center overflow-hidden rounded-full border border-[var(--border)] bg-[var(--card)] px-1 text-sm font-semibold text-[var(--text)] shadow-card transition hover:-translate-y-0.5 hover:border-[var(--accent)]"
+            aria-label="Toggle theme"
+            data-theme-toggle
+          >
+            <span class="absolute inset-y-1 left-1 inline-flex w-8 items-center justify-center rounded-full bg-[var(--bg)] transition-all duration-200 will-change-transform" data-theme-thumb data-icon="🌙" aria-hidden="true"></span>
+          </button>
+          <a
+            href="/resume.pdf"
+            download
+            class="hidden rounded-full border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-sm font-semibold text-[var(--text)] shadow-card transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:text-[var(--accent)] md:inline-flex"
+          >
+            Download Resume
+          </a>
+          <a
+            href={`mailto:${email}`}
+            class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--bg)] shadow-glow transition hover:scale-105 focus:outline-none"
+            aria-label="Email Sagnik Chakraborty"
+          >
+            @
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main id="content" class={`relative z-10 mx-auto max-w-6xl px-6 ${withTopPad ? "pt-12" : "pt-6"}`}>
+      <slot />
+    </main>
+
+    <footer class="mx-auto mt-20 max-w-6xl border-t border-[var(--border)]/70 px-6 py-10 text-sm text-[var(--muted)]">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex items-center gap-3">
+          <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--card)] shadow-glow">
+            <img src="/logo.svg" alt="DupedByte logo" class="h-9 w-9" width="36" height="36" loading="lazy" />
+          </span>
+          <div>
+            <p class="text-base font-semibold text-[var(--text)]">DupedByte</p>
+            <p>Building, learning, and sharing from dupedbyte.dev</p>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <a class="rounded-full border border-[var(--border)] px-3 py-1.5 transition hover:border-[var(--accent)] hover:text-[var(--accent)]" href="https://github.com/RedFlame2112" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="rounded-full border border-[var(--border)] px-3 py-1.5 transition hover:border-[var(--accent)] hover:text-[var(--accent)]" href="https://www.linkedin.com/in/sagnik-chakraborty2112/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a class="rounded-full border border-[var(--border)] px-3 py-1.5 transition hover:border-[var(--accent)] hover:text-[var(--accent)]" href={`mailto:${email}`}>Email</a>
+        </div>
+      </div>
+      <p class="mt-6 text-xs uppercase tracking-[0.18em] text-[var(--muted)]">Made with Astro, Tailwind CSS, Shiki, Pagefind-ready</p>
+    </footer>
+
+    <div class="fixed bottom-5 right-5 z-50 space-y-3" data-ldm-root data-email={email}>
+      <button
+        type="button"
+        class="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--bg)] shadow-glow transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[var(--accent-strong)]"
+        aria-label="Open terminal"
+        data-ldm-open
+      >
+        &gt;_
+      </button>
+      <div class="hidden w-[420px] max-w-[92vw] rounded-2xl p-5 ldm-shell" data-ldm-shell>
+        <div class="flex items-center justify-between text-xs uppercase tracking-[0.14em] text-[var(--muted)]">
+          <span>Mini terminal</span>
+          <button class="rounded-full px-2 py-1 text-[var(--muted)] transition hover:text-[var(--accent)]" type="button" data-ldm-close>
+            Close
+          </button>
+        </div>
+        <div class="ldm-console">
+          <div class="ldm-shell-log" data-ldm-log>
+            <div>&gt; type "help" to explore commands</div>
+            <div>&gt; use "reset" to restore your saved theme</div>
+            <div>&gt; use "clear" to tidy the console</div>
+          </div>
+          <form class="ldm-console-form" data-ldm-form>
+            <span class="ldm-prompt text-xs text-[var(--accent)]">guest@blog:$</span>
+            <div class="ldm-input-wrap">
+              <input
+                class="ldm-console-input"
+                data-ldm-input
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <span class="ldm-cursor" aria-hidden="true">_</span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- TODO AFTER HOSTING -->
+    <!-- <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "CLOUDFLARE_BEACON_TOKEN"}'
+    ></script> -->
+
+
+    <script>
+      (() => {
+        const themeRoot = document.documentElement;
+        const toggleBtn = document.querySelector('[data-theme-toggle]') as HTMLElement | null;
+        const thumb = document.querySelector('[data-theme-thumb]') as HTMLElement | null;
+        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+
+        const setTheme = (mode: string, { persist = true } = {}) => {
+          const target = mode === 'light' ? 'light' : mode === 'ldm' ? 'ldm' : 'dark';
+
+          if (target === 'light') {
+            themeRoot.setAttribute('data-theme', 'light');
+            if (thumb) {
+              thumb.style.transform = 'translateX(28px)';
+              thumb.dataset.icon = '☀️';
+            }
+            if (toggleBtn) toggleBtn.style.display = '';
+          } else if (target === 'ldm') {
+            themeRoot.setAttribute('data-theme', 'ldm');
+            if (toggleBtn) toggleBtn.style.display = 'none';
+          } else {
+            themeRoot.removeAttribute('data-theme');
+            if (thumb) {
+              thumb.style.transform = 'translateX(0)';
+              thumb.dataset.icon = '🌙';
+            }
+            if (toggleBtn) toggleBtn.style.display = '';
+          }
+
+          if (persist) {
+            localStorage.setItem('theme', target);
+            if (target !== 'ldm') {
+              localStorage.removeItem('theme:previous');
+            }
+          }
+        };
+
+        const storedTheme = localStorage.getItem('theme');
+        const existingTheme = themeRoot.getAttribute('data-theme');
+        const initialTheme = existingTheme || storedTheme || (prefersLight ? 'light' : 'dark');
+        setTheme(initialTheme);
+
+        if (toggleBtn) {
+          toggleBtn.addEventListener('click', () => {
+            const isLight = themeRoot.getAttribute('data-theme') === 'light';
+            setTheme(isLight ? 'dark' : 'light');
+          });
+        }
+
+        const rememberPreviousTheme = () => {
+          const currentStored = localStorage.getItem('theme');
+          if (currentStored && currentStored !== 'ldm') {
+            localStorage.setItem('theme:previous', currentStored);
+          } else if (!currentStored && !localStorage.getItem('theme:previous')) {
+            localStorage.setItem('theme:previous', prefersLight ? 'light' : 'dark');
+          }
+        };
+
+        const ldmRoot = document.querySelector('[data-ldm-root]');
+        if (!ldmRoot) return;
+        const email = ldmRoot.getAttribute('data-email') || '';
+        const openBtn = ldmRoot.querySelector('[data-ldm-open]');
+        const shell = ldmRoot.querySelector('[data-ldm-shell]');
+        const closeBtn = ldmRoot.querySelector('[data-ldm-close]');
+        const logEl = ldmRoot.querySelector('[data-ldm-log]');
+        const form = ldmRoot.querySelector('[data-ldm-form]');
+        const input = ldmRoot.querySelector('[data-ldm-input]') as HTMLInputElement;
+        const cursorEl = ldmRoot.querySelector('.ldm-cursor');
+        const inputWrap = ldmRoot.querySelector('.ldm-input-wrap') as HTMLElement;
+        if (!openBtn || !shell || !closeBtn || !logEl || !form || !input || !cursorEl || !inputWrap) return;
+
+        type Command = {
+          name: string;
+          description: string;
+          run: (args: string[]) => void;
+          aliases?: string[];
+          hidden?: boolean;
+        };
+
+        const appendLog = (content: string | HTMLElement) => {
+          const line = document.createElement('div');
+          if (typeof content === 'string') {
+            line.textContent = content;
+          } else {
+            line.appendChild(content);
+          }
+          logEl.appendChild(line);
+          logEl.scrollTop = logEl.scrollHeight;
+        };
+
+        const appendLines = (...entries: Array<string | HTMLElement>) => {
+          entries.forEach((entry) => appendLog(entry));
+        };
+
+        const clearLog = () => {
+          logEl.innerHTML = '';
+        };
+
+        const restorePreviousTheme = () => {
+          const fallback = localStorage.getItem('theme:previous') || localStorage.getItem('theme') || (prefersLight ? 'light' : 'dark');
+          setTheme(fallback);
+          localStorage.setItem('theme', fallback);
+          localStorage.removeItem('theme:previous');
+        };
+
+        const enterLdm = () => {
+          appendLog('Entering low detail mode...');
+          rememberPreviousTheme();
+          setTheme('ldm');
+          appendLog('LDM applied. Use "reset" to return or refresh to restore.');
+        };
+
+        const syncCursor = () => {
+          const pos = typeof input.selectionStart === 'number' ? input.selectionStart : input.value.length;
+          inputWrap.style.setProperty('--ldm-cursor-ch', pos.toString());
+        };
+
+        const linkShortcuts = [
+          { label: 'Home', href: '/' },
+          { label: 'Projects', href: '/projects' },
+          { label: 'Blog', href: '/blog' },
+          { label: 'About', href: '/about' },
+          { label: 'Resume', href: '/resume.pdf' }
+        ];
+
+        const renderHelp = () => {
+          appendLog('Commands (click to expand):');
+          commands
+            .filter((command) => !command.hidden)
+            .forEach((command) => {
+              const row = document.createElement('div');
+              row.className = 'ldm-help-row';
+
+              const toggle = document.createElement('button');
+              toggle.type = 'button';
+              toggle.className = 'ldm-help-toggle';
+              toggle.textContent = command.name;
+              toggle.setAttribute('aria-expanded', 'false');
+
+              const desc = document.createElement('div');
+              desc.className = 'ldm-help-desc';
+              desc.textContent = command.description;
+
+              toggle.addEventListener('click', () => {
+                const isOpen = desc.classList.toggle('is-open');
+                toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+              });
+
+              row.append(toggle, desc);
+              appendLog(row);
+            });
+        };
+
+        const commands: Command[] = [
+          {
+            name: 'help',
+            description: 'List available commands. Click each one to see what it does.',
+            run: () => renderHelp()
+          },
+          {
+            name: 'clear',
+            description: 'Clear the console output.',
+            run: () => {
+              clearLog();
+              appendLines('> clear', 'Console cleared.');
+            },
+            aliases: ['cls']
+          },
+          {
+            name: 'reset',
+            description: 'Restore your previously saved theme.',
+            run: () => {
+              appendLog('Restoring your saved theme...');
+              restorePreviousTheme();
+              appendLog('Back to your saved theme.');
+            },
+            aliases: ['exit']
+          },
+          {
+            name: 'theme',
+            description: 'Switch theme: theme light | theme dark.',
+            run: (args) => {
+              const choice = (args[0] || '').toLowerCase();
+              if (choice !== 'light' && choice !== 'dark') {
+                appendLog('Usage: theme <light|dark>');
+                return;
+              }
+              setTheme(choice);
+              appendLog(`Theme set to ${choice}.`);
+            }
+          },
+          {
+            name: 'links',
+            description: 'Show quick links to main sections.',
+            run: () => {
+              const wrapper = document.createElement('div');
+              wrapper.className = 'ldm-links';
+              linkShortcuts.forEach((shortcut) => {
+                const anchor = document.createElement('a');
+                anchor.href = shortcut.href;
+                anchor.textContent = shortcut.label;
+                anchor.target = shortcut.href.startsWith('http') ? '_blank' : '_self';
+                anchor.rel = 'noreferrer';
+                wrapper.appendChild(anchor);
+              });
+              appendLog(wrapper);
+            }
+          },
+          {
+            name: 'contact',
+            description: 'Get the email address for quick reach-out.',
+            run: () => {
+              const contactLine = document.createElement('div');
+              contactLine.className = 'ldm-contact';
+              contactLine.textContent = 'Email: ';
+              const mailLink = document.createElement('a');
+              mailLink.href = `mailto:${email}`;
+              mailLink.textContent = email;
+              contactLine.appendChild(mailLink);
+              appendLog(contactLine);
+            }
+          },
+          {
+            name: 'resume',
+            description: 'Open the latest resume in a new tab.',
+            run: () => {
+              appendLog('Opening resume...');
+              window.open('/resume.pdf', '_blank', 'noopener');
+            }
+          },
+          {
+            name: 'stack',
+            description: 'See the tech powering this site.',
+            run: () => {
+              appendLog('Built with Astro, Tailwind CSS, Shiki, KaTeX, and Pagefind. Hosted on dupedbyte.dev.');
+            }
+          },
+          {
+            name: 'ldm',
+            description: 'Low detail mode override.',
+            run: () => enterLdm(),
+            hidden: true
+          }
+        ];
+
+        const commandLookup = new Map<string, Command>();
+        commands.forEach((command) => {
+          const keys = [command.name, ...(command.aliases ?? [])];
+          keys.forEach((key) => commandLookup.set(key.toLowerCase(), command));
+        });
+
+        openBtn.addEventListener('click', () => {
+          shell.classList.toggle('hidden');
+          if (!shell.classList.contains('hidden')) {
+            input.focus();
+            syncCursor();
+          }
+        });
+
+        closeBtn.addEventListener('click', () => shell.classList.add('hidden'));
+
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const cmd = (input.value || '').trim();
+          if (!cmd) return;
+          appendLog(`> ${cmd}`);
+          input.value = '';
+          syncCursor();
+          const [name, ...args] = cmd.split(/\s+/);
+          const command = commandLookup.get(name.toLowerCase());
+          if (!command) {
+            appendLog(`Unknown command: ${cmd}. Type "help" to see the available commands.`);
+            return;
+          }
+          command.run(args);
+        });
+
+        input.addEventListener('input', syncCursor);
+        input.addEventListener('click', syncCursor);
+        input.addEventListener('keyup', syncCursor);
+        input.addEventListener('keydown', syncCursor);
+        syncCursor();
+      })();
+    </script>
+  </body>
+</html>

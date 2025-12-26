@@ -1,0 +1,175 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { projects } from '../data/projects';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const heroPoints = [
+  "Full-stack experimentation with TypeScript, Python, and a touch of math.",
+  "Writing in Markdown, shipped on Astro, tuned for Cloudflare Pages.",
+  "Exploring security, data pipelines, and visual storytelling."
+];
+
+const focus = [
+  { title: "Building", detail: "Developing and testing products in the intersection between AI and security", tone: "active" },
+  { title: "Learning", detail: "Deepening Security and AI fundamentals", tone: "calm" },
+  { title: "Sharing", detail: "Documenting processes and publishing posts regularly", tone: "bright" }
+];
+const difficultyTone = (score: number) => {
+  if (score <= 1) return "bg-emerald-400 shadow-glow";
+  if (score === 2) return "bg-teal-400 shadow-glow";
+  if (score === 3) return "bg-amber-400 shadow-glow";
+  if (score === 4) return "bg-orange-400 shadow-glow";
+  return "bg-rose-400 shadow-glow";
+};
+---
+
+<BaseLayout
+  title="Sagnik Chakraborty | Engineer & Builder"
+  description="Personal site for Sagnik Chakraborty — projects, writing, and experiments built with Astro, Tailwind, Shiki, and Pagefind."
+  withTopPad={false}
+>
+  <section class="grid gap-10 pb-16 pt-10 lg:grid-cols-[1.1fr_0.9fr]">
+    <div class="space-y-8 rounded-3xl border border-[var(--border)] bg-[var(--card)]/80 p-8 shadow-card backdrop-blur hover:-translate-y-1 transition-transform duration-300">
+      <p class="text-sm uppercase tracking-[0.18em] text-[var(--muted)]">Hello, I’m Sagnik</p>
+      <h1 class="text-4xl font-semibold leading-tight sm:text-5xl">
+        Systems Engineer and Developer
+      </h1>
+      <p class="max-w-2xl text-lg text-[var(--muted)]">
+        Software engineer who enjoys the overlap of systems, security, and AI. This space captures my work,
+        experiments, and notes — built with Astro, Tailwind, Shiki, and deployed with Cloudflare Pages
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a
+          class="rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--bg)] shadow-glow transition hover:-translate-y-0.5"
+          href="/projects"
+        >
+          View projects
+        </a>
+        <a
+          class="rounded-full border border-[var(--border)] px-5 py-3 text-sm font-semibold text-[var(--text)] transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          href="/blog"
+        >
+          Read the blog
+        </a>
+        <a
+          class="rounded-full border border-[var(--border)] px-5 py-3 text-sm font-semibold text-[var(--text)] transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          href="/resume.pdf"
+        >
+          Resume PDF
+        </a>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2">
+        {heroPoints.map((point) => (
+          <div class="flex items-start gap-3 rounded-2xl border border-[var(--border)] px-4 py-3">
+            <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-[var(--accent)] shadow-glow" />
+            <p class="text-[var(--muted)]">{point}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="space-y-5">
+      <div class="rounded-3xl border border-[var(--border)] bg-gradient-to-b from-[var(--card)]/80 to-[var(--panel)] p-7 shadow-card hover:-translate-y-1 transition-transform duration-300">
+        <div class="flex items-center gap-3 text-sm uppercase tracking-[0.16em] text-[var(--muted)]">
+          <span class="h-2 w-2 rounded-full bg-[var(--accent)] shadow-glow" />
+          Currently
+        </div>
+        <div class="mt-6 space-y-5">
+          {focus.map((item) => (
+            <div class="rounded-2xl border border-[var(--border)]/80 bg-[var(--bg)]/40 px-4 py-3">
+              <p class="text-sm font-semibold text-[var(--text)]">{item.title}</p>
+              <p class="text-[var(--muted)]">{item.detail}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="rounded-3xl border border-[var(--border)] bg-[var(--card)]/80 p-7 shadow-card hover:-translate-y-1 transition-transform duration-300">
+        <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">Signals</p>
+        <div class="mt-4 space-y-3 text-[var(--muted)]">
+          <p class="transition-colors hover:text-[var(--text)]">🔗 LinkedIn: <a class="text-[var(--accent)] transition-colors hover:text-[var(--accent-strong)] hover:underline" href="https://www.linkedin.com/in/sagnik-chakraborty2112/" target="_blank" rel="noreferrer">sagnik-chakraborty2112</a></p>
+          <p class="transition-colors hover:text-[var(--text)]">📧 Email: <a class="text-[var(--accent)] transition-colors hover:text-[var(--accent-strong)] hover:underline" href="mailto:sagnikchakraborty212@gmail.com">sagnikchakraborty212@gmail.com</a></p>
+          <p class="transition-colors hover:text-[var(--text)]">💻 GitHub: <a class="text-[var(--accent)] transition-colors hover:text-[var(--accent-strong)] hover:underline" href="https://github.com/RedFlame2112" target="_blank" rel="noreferrer">@RedFlame2112</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-6 pb-14">
+    <div class="flex items-center justify-between gap-3">
+      <div>
+        <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">Featured work</p>
+        <h2 class="text-2xl font-semibold">Projects in motion</h2>
+      </div>
+      <a class="text-sm font-semibold text-[var(--accent)] hover:underline" href="/projects">See all</a>
+    </div>
+    <div class="grid gap-4 md:grid-cols-2">
+      {projects
+        .filter((project) => project.highlight)
+        .map((project) => (
+          <a
+            href={project.link}
+            class="group flex h-full flex-col justify-between rounded-3xl border border-[var(--border)] bg-[var(--card)]/80 p-6 shadow-card transition hover:-translate-y-1.5 hover:border-[var(--accent)] hover:shadow-glow"
+          >
+            <div class="space-y-3">
+              <div class="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-[var(--muted)]">
+                <span class="h-2 w-2 rounded-full bg-[var(--accent)] shadow-glow" />
+                {project.status ?? "Project"}
+              </div>
+              <h3 class="text-xl font-semibold group-hover:text-[var(--accent)]">{project.title}</h3>
+              <p class="text-[var(--muted)]">{project.summary}</p>
+            </div>
+            <div class="mt-6 flex flex-wrap gap-2 text-xs text-[var(--muted)]">
+              {project.stack.map((tech) => (
+                <span class="rounded-full border border-[var(--border)] px-3 py-1">{tech}</span>
+              ))}
+            </div>
+          </a>
+        ))}
+    </div>
+  </section>
+
+  <section class="space-y-6 pb-16">
+    <div class="flex items-center justify-between gap-3">
+      <div>
+        <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">Latest writing</p>
+        <h2 class="text-2xl font-semibold">Blog highlights</h2>
+      </div>
+      <a class="text-sm font-semibold text-[var(--accent)] hover:underline" href="/blog">Open blog</a>
+    </div>
+    {posts.length === 0 ? (
+      <div class="rounded-3xl border border-[var(--border)] bg-[var(--card)]/70 p-6 text-[var(--muted)]">
+        No posts yet — first entry coming soon.
+      </div>
+    ) : (
+      <div class="grid gap-4 md:grid-cols-3">
+        {posts.map((post) => (
+          <a
+            href={`/blog/${post.slug}`}
+            class="group flex h-full flex-col justify-between rounded-3xl border border-[var(--border)] bg-[var(--card)]/70 p-6 shadow-card transition hover:-translate-y-1 hover:border-[var(--accent)]"
+          >
+              <div class="space-y-4">
+              <div class="flex items-center justify-between text-xs uppercase tracking-[0.16em] text-[var(--muted)]">
+                <span>{new Date(post.data.pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                <span class="inline-flex items-center gap-1 rounded-full border border-[var(--border)] bg-[var(--card)]/80 px-2 py-1 text-[11px] font-semibold text-[var(--text)]">
+                  <span class={`h-1.5 w-1.5 rounded-full ${difficultyTone(post.data.difficulty ?? 3)}`} />
+                  {post.data.difficulty ?? 3}/5
+                </span>
+              </div>
+              <h3 class="text-xl font-semibold group-hover:text-[var(--accent)]">{post.data.title}</h3>
+              <p class="text-[var(--muted)]">{post.data.description}</p>
+            </div>
+            <div class="mt-5 flex flex-wrap gap-2 text-xs text-[var(--muted)]">
+              {post.data.tags.slice(0, 3).map((tag) => (
+                <span class="rounded-full border border-[var(--border)] px-3 py-1">#{tag}</span>
+              ))}
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>

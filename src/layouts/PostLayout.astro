@@ -1,0 +1,165 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+
+type Props = {
+  frontmatter: CollectionEntry<'blog'>['data'];
+};
+
+const { frontmatter } = Astro.props as Props;
+const { title, description, pubDate, updatedDate, readTime, tags = [], difficulty = 3 } = frontmatter;
+const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric'
+});
+const lastUpdated =
+  updatedDate &&
+  new Date(updatedDate).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+
+const tagColors = [
+  "from-emerald-500/30 to-emerald-700/40 text-emerald-100 border-emerald-600/60",
+  "from-cyan-500/25 to-blue-700/40 text-cyan-100 border-blue-600/60",
+  "from-amber-400/25 to-orange-600/40 text-amber-100 border-orange-500/60",
+  "from-pink-500/25 to-rose-700/40 text-pink-100 border-rose-600/60",
+  "from-sky-500/25 to-indigo-700/40 text-sky-100 border-indigo-600/60"
+];
+const tagStyle = (tag: string) => tagColors[Math.abs(tag.toLowerCase().split('').reduce((a, c) => a + c.charCodeAt(0), 0)) % tagColors.length];
+const difficultyLabel = (score: number) => {
+  if (score <= 1) return "Entry";
+  if (score === 2) return "Steady";
+  if (score === 3) return "Moderate";
+  if (score === 4) return "Challenging";
+  return "Expert";
+};
+const difficultyTone = (score: number) => {
+  if (score <= 1) return "bg-emerald-400 shadow-glow";
+  if (score === 2) return "bg-teal-400 shadow-glow";
+  if (score === 3) return "bg-amber-400 shadow-glow";
+  if (score === 4) return "bg-orange-400 shadow-glow";
+  return "bg-rose-400 shadow-glow";
+};
+---
+
+<BaseLayout title={`${title} | Blog - Sagnik Chakraborty`} description={description}>
+  <article class="mx-auto max-w-3xl space-y-8">
+    <header class="space-y-6 rounded-3xl border border-[var(--border)] bg-[var(--card)]/70 px-6 py-6 shadow-card">
+      <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">Blog</p>
+      <div class="space-y-3">
+        <h1 class="text-3xl font-semibold leading-tight sm:text-4xl">{title}</h1>
+        <p class="text-[var(--muted)]">{description}</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-3 text-sm text-[var(--muted)]">
+        <span class="rounded-full border border-[var(--border)] px-3 py-1">Published {formattedDate}</span>
+        <span class="rounded-full border border-[var(--border)] px-3 py-1">{readTime} min read</span>
+        {lastUpdated && <span class="rounded-full border border-[var(--border)] px-3 py-1">Updated {lastUpdated}</span>}
+        <span class="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--card)]/80 px-3 py-1 text-[var(--text)]">
+          <span class={`h-2 w-2 rounded-full ${difficultyTone(difficulty)}`} />
+          <span>Difficulty {difficulty}/5 - {difficultyLabel(difficulty)}</span>
+        </span>
+        {tags.map((tag) => (
+          <a
+            href={`/blog/tag/${tag.toLowerCase()}`}
+            class={`rounded-full border px-3 py-1 text-[var(--text)] transition hover:scale-105 bg-gradient-to-r ${tagStyle(tag)}`}
+          >
+            #{tag}
+          </a>
+        ))}
+      </div>
+    </header>
+    <div class="pagefind-meta" aria-hidden="true">
+      <span data-pagefind-meta={`title:${title}`}></span>
+      <span data-pagefind-meta={`description:${description}`}></span>
+      <span data-pagefind-meta={`pubDate:${pubDate.toISOString()}`}></span>
+      <span data-pagefind-meta={`readTime:${readTime}`}></span>
+      <span data-pagefind-meta={`difficulty:${difficulty}`}></span>
+      <span data-pagefind-sort={`date:${pubDate.toISOString()}`}></span>
+      <span data-pagefind-sort={`title:${title.toLowerCase()}`}></span>
+      <span data-pagefind-sort={`difficulty:${difficulty}`}></span>
+      <span data-pagefind-filter={`difficulty:${difficulty}`}></span>
+      <span data-pagefind-filter={`year:${new Date(pubDate).getFullYear()}`}></span>
+      {tags.map((tag) => (
+        <span data-pagefind-filter={`tag:${tag.toLowerCase()}`}></span>
+      ))}
+    </div>
+    <div class="prose prose-invert blog-prose">
+      <slot />
+    </div>
+    <div class="flex items-center justify-between rounded-2xl border border-[var(--border)] px-4 py-3 text-sm text-[var(--muted)]">
+      <span>Enjoyed this post? Share it or reach out on LinkedIn.</span>
+      <a class="text-[var(--accent)] underline decoration-[var(--border)] underline-offset-4" href="/blog">Back to blog</a>
+    </div>
+  </article>
+</BaseLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const blocks = Array.from(document.querySelectorAll('.blog-prose pre > code'));
+
+    blocks.forEach((code) => {
+      const pre = code.parentElement;
+      if (!pre || pre.dataset.enhanced === 'true') return;
+      const originalParent = pre.parentElement;
+      const nextSibling = pre.nextSibling;
+
+      const langClass = Array.from(code.classList).find((cls) => cls.startsWith('language-'));
+      const lang = code.getAttribute('data-language') || (langClass ? langClass.replace('language-', '') : 'code');
+      const meta = code.getAttribute('data-meta') || '';
+      const titleMatch = meta.match(/title="([^"]+)"/) || meta.match(/file="([^"]+)"/);
+      const title = (titleMatch && titleMatch[1]) || lang || 'code';
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'code-block';
+
+      const header = document.createElement('div');
+      header.className = 'code-block__top';
+
+      const label = document.createElement('span');
+      label.className = 'code-block__label';
+      label.textContent = title;
+
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'code-block__copy';
+      button.setAttribute('aria-label', 'Copy code');
+      button.innerHTML =
+        '<span class="code-block__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.6"></rect><rect x="4" y="4" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.6"></rect></svg></span><span class="code-block__text">Copy</span>';
+
+      button.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText((code as HTMLElement).innerText);
+          button.classList.add('is-copied');
+          const textElement = button.querySelector('.code-block__text');
+          if (textElement) textElement.textContent = 'Copied';
+          setTimeout(() => {
+            button.classList.remove('is-copied');
+            const textEl = button.querySelector('.code-block__text');
+            if (textEl) textEl.textContent = 'Copy';
+          }, 1400);
+        } catch (err) {
+          console.error('Copy failed', err);
+        }
+      });
+
+      header.append(label, button);
+
+      const body = document.createElement('div');
+      body.className = 'code-block__body';
+      pre.dataset.enhanced = 'true';
+      body.append(pre);
+
+      wrapper.append(header, body);
+      if (originalParent) {
+        if (nextSibling) {
+          originalParent.insertBefore(wrapper, nextSibling);
+        } else {
+          originalParent.appendChild(wrapper);
+        }
+      }
+    });
+  });
+</script>

@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About - Sagnik Chakraborty"
+  description="Who I am, what I value, and how I build things - Sagnik Chakraborty."
+>
+  <section class="space-y-8">
+    <div class="space-y-4 rounded-3xl border border-[var(--border)] bg-[var(--card)]/80 p-8 shadow-card">
+      <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">About</p>
+      <h1 class="text-3xl font-semibold sm:text-4xl">Sagnik Chakraborty</h1>
+      <p class="text-lg text-[var(--muted)]">
+        I am an M.C.S. student in Computer Science at the University of Illinois Urbana-Champaign (expected May 2027)
+        with a B.S. in Computer Engineering (May 2025). I build secure systems that hold up under operational pressure,
+        focusing on security engineering, DevSecOps, and infrastructure reliability.
+      </p>
+      <p class="text-lg text-[var(--muted)]">
+        At Cognizant, I designed and unit-tested HL7 FHIR data mapping workflows and shipped secure Azure DevOps
+        pipelines with Snyk-based vulnerability detection. At SIGPwny, I manage ESXi platforms for 100+ users, deploy
+        CTF infrastructure on GKE, and co-founded the Purple Team, including STARVE, an automated embedded attack
+        simulation platform.
+      </p>
+      <p class="text-lg text-[var(--muted)]">
+        My work also spans applied ML and security analytics, from depth-aware neural style transfer to intrusion
+        detection and stream-processing systems. I am growing toward security leadership roles, with long-term goals of
+        founding a cybersecurity consulting firm or serving as a CISO.
+      </p>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-2">
+      <div class="space-y-4 rounded-3xl border border-[var(--border)] bg-[var(--card)]/80 p-7 shadow-card">
+        <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">Principles</p>
+        <ul class="space-y-3 text-[var(--muted)]">
+          <li>Embed security into delivery and measure risk reduction.</li>
+          <li>Automate the repeatable work with reliable pipelines and runbooks.</li>
+          <li>Design for production constraints and adversarial thinking.</li>
+          <li>Share what I learn so teams can move faster.</li>
+        </ul>
+      </div>
+
+      <div class="space-y-4 rounded-3xl border border-[var(--border)] bg-[var(--card)]/80 p-7 shadow-card">
+        <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">Toolbox</p>
+        <div class="flex flex-wrap gap-2 text-sm text-[var(--muted)]">
+          {[
+            "Python",
+            "Go",
+            "C/C++",
+            "TypeScript",
+            "Azure DevOps",
+            "Kubernetes",
+            "Terraform",
+            "Docker",
+            "GKE",
+            "ESXi",
+            "Proxmox",
+            "Snyk"
+          ].map((tool) => (
+            <span class="rounded-full border border-[var(--border)] px-3 py-1.5">{tool}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+      <div class="space-y-4 rounded-3xl border border-[var(--border)] bg-[var(--card)]/80 p-7 shadow-card">
+        <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">Highlights</p>
+        <div class="space-y-3 text-[var(--muted)]">
+          <p>Designed and tested HL7 FHIR data mapping workflows and secured CI/CD delivery at Cognizant with Azure DevOps and Snyk.</p>
+          <p>Managed SIGPwny infrastructure (ESXi, GKE) for 100+ users and co-founded the Purple Team for attack/defense exercises.</p>
+          <p>Built <strong class="text-[var(--text)]">STARVE</strong>, an automated embedded attack simulation platform for MITRE eCTF, reducing manual testing.</p>
+          <p>Built depth-aware neural style transfer with evaluation across 1,000 outputs and worked on intrusion detection and stream-processing systems.</p>
+        </div>
+      </div>
+
+      <div class="space-y-4 rounded-3xl border border-[var(--border)] bg-[var(--card)]/70 p-7 shadow-card">
+        <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">Working with me</p>
+        <ul class="space-y-3 text-[var(--muted)]">
+          <li>I prefer evidence-based security with instrumented pipelines and repeatable checks.</li>
+          <li>I turn ambiguity into runbooks, automation, and tooling that scales people.</li>
+          <li>I communicate with concise docs, diagrams, and measurable outcomes.</li>
+          <li>I am always open to security and infrastructure collaborations; reach out via email or LinkedIn.</li>
+        </ul>
+        <div class="mt-4 flex gap-3">
+          <a class="rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--bg)] shadow-glow transition hover:-translate-y-0.5" href="/resume.pdf" download>
+            Download resume
+          </a>
+          <a
+            class="rounded-full border border-[var(--border)] px-5 py-3 text-sm font-semibold text-[var(--text)] transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+            href="mailto:sagnikchakraborty212@gmail.com"
+          >
+            Get in touch
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

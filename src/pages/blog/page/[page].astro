@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogList from '../../../components/BlogList.astro';
+import { getSortedPosts, POSTS_PER_PAGE } from '../../../lib/blog';
+
+type PageData = {
+  currentPage: number;
+  lastPage: number;
+  data: Awaited<ReturnType<typeof getSortedPosts>>;
+};
+
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+  const totalPages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
+
+  return Array.from({ length: totalPages }).map((_, index) => {
+    const start = index * POSTS_PER_PAGE;
+    const end = start + POSTS_PER_PAGE;
+    const pagePosts = posts.slice(start, end);
+
+    return {
+      params: { page: String(index + 1) },
+      props: {
+        page: {
+          currentPage: index + 1,
+          lastPage: totalPages,
+          data: pagePosts
+        }
+      }
+    };
+  });
+}
+
+const { page } = Astro.props as { page: PageData };
+---
+
+<BaseLayout
+  title={`Blog — Page ${page.currentPage} | Sagnik Chakraborty`}
+  description={`Page ${page.currentPage} of writing by Sagnik Chakraborty.`}
+>
+  <section class="space-y-6">
+    <div class="space-y-2">
+      <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">Blog</p>
+      <h1 class="text-3xl font-semibold">Notes + build logs</h1>
+    </div>
+    <BlogList posts={page.data} pagination={{ currentPage: page.currentPage, lastPage: page.lastPage }} />
+  </section>
+</BaseLayout>

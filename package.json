@@ -1,0 +1,27 @@
+{
+  "name": "sagnik-dev",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev --host",
+    "build": "astro build && npx pagefind --site dist",
+    "preview": "astro preview --host",
+    "astro": "astro",
+    "dev:net": "npm run build && npx pagefind --site dist --output-path public/_pagefind && astro dev --host --port 3000",
+    "dev:prod": "npm run build && npx wrangler pages dev dist"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^12.6.12",
+    "@astrojs/rss": "^4.0.14",
+    "@astrojs/sitemap": "^3.6.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "astro": "^5.16.6",
+    "rehype-callouts": "^1.0.2",
+    "rehype-katex": "^7.0.0",
+    "remark-math": "^6.0.0",
+    "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "pagefind": "^1.4.0"
+  }
+}

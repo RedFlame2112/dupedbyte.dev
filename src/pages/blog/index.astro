@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogList from '../../components/BlogList.astro';
+import { getSortedPosts, POSTS_PER_PAGE } from '../../lib/blog';
+
+const posts = await getSortedPosts();
+const lastPage = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
+const pagePosts = posts.slice(0, POSTS_PER_PAGE);
+---
+
+<BaseLayout title="Blog | Sagnik Chakraborty" description="Writing, notes, and build logs from Sagnik Chakraborty.">
+  <section class="space-y-6">
+    <div class="space-y-3">
+      <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">Blog</p>
+      <h1 class="text-3xl font-semibold">Notes + build logs</h1>
+      <p class="text-[var(--muted)]">Systems, security, and green-tinted UI experiments. New posts land here first.</p>
+    </div>
+
+    <div class="space-y-3 rounded-3xl border border-[var(--border)] bg-[var(--card)]/70 p-4 shadow-card">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <p class="text-xs uppercase tracking-[0.14em] text-[var(--muted)]">Search</p>
+          <p class="text-lg font-semibold text-[var(--text)]">Find a post</p>
+        </div>
+        <span id="pagefind-status" class="text-sm text-[var(--muted)]">Loading search...</span>
+      </div>
+      <div id="pagefind-search" class="rounded-3xl border border-[var(--border)] bg-[var(--card)]/70 p-2 shadow-card"></div>
+    </div>
+
+    <BlogList posts={pagePosts} pagination={{ currentPage: 1, lastPage }} />
+  </section>
+</BaseLayout>
+
+<script type="module">
+  const mount = async () => {
+    const status = document.querySelector('#pagefind-status');
+    const target = document.querySelector('#pagefind-search');
+    if (!target) return;
+    if (status) status.textContent = 'Loading search...';
+    try {
+      const cssId = 'pagefind-ui-css';
+      if (!document.getElementById(cssId)) {
+        const link = document.createElement('link');
+        link.id = cssId;
+        link.rel = 'stylesheet';
+        link.href = '/_pagefind/pagefind-ui.css';
+        document.head.appendChild(link);
+      }
+
+      await new Promise((resolve, reject) => {
+        if (window.PagefindUI) return resolve(window.PagefindUI);
+        const script = document.createElement('script');
+        script.src = '/_pagefind/pagefind-ui.js';
+        script.defer = true;
+        script.onload = () => resolve(window.PagefindUI);
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+
+      new window.PagefindUI({
+        element: target,
+        bundlePath: '/_pagefind/',
+        showImages: false,
+        showSubResults: true,
+        translations: { placeholder: 'Search posts...' },
+        filters: { tag: 'Tags', difficulty: 'Difficulty', year: 'Year' },
+        sort: {
+          weight: { title: 'Title', date: 'Publication date' },
+          default: 'date',
+          direction: 'desc'
+        }
+      });
+
+      if (status) status.textContent = 'Ready. Start typing or add filters.';
+    } catch (error) {
+      console.error('Pagefind UI failed to load', error);
+      if (status) {
+        status.textContent = 'Search index not available yet. Please try again soon.';
+      }
+    }
+  };
+
+  mount();
+</script>

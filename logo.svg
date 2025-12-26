@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="420" viewBox="0 0 420 420" role="img" aria-label="square chip logo with centered x00">
+  <defs>
+    <style>
+      :root{
+        --bg:#050c09;
+        --panel:#0a1812;
+        --card:#0f1f17;
+        --muted:#9fb3a5;
+        --text:#e7f3ea;
+        --accent:#3fa46a;
+        --accent-strong:#86efac;
+        --border:#163324;
+
+        /* between accent and accent-strong */
+        --pin:#63d08f;
+      }
+      .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    </style>
+
+    <!-- controlled glow -->
+    <filter id="softGlow" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="6" result="b"></feGaussianBlur>
+      <feColorMatrix in="b" type="matrix" values="0 0 0 0 0.20
+                0 0 0 0 0.62
+                0 0 0 0 0.40
+                0 0 0 .65 0" result="g"></feColorMatrix>
+      <feMerge>
+        <feMergeNode in="g"></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+
+    <!-- Subtle scanlines -->
+    <pattern id="scan" width="6" height="6" patternUnits="userSpaceOnUse">
+      <rect width="6" height="6" fill="none"></rect>
+      <rect y="0" width="6" height="1" fill="rgba(231,243,234,0.045)"></rect>
+    </pattern>
+
+    <!-- Higher-contrast chip body -->
+    <linearGradient id="chipGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07160f"></stop>
+      <stop offset="0.55" stop-color="#0b2217"></stop>
+      <stop offset="1" stop-color="#05110c"></stop>
+    </linearGradient>
+
+    <!-- Lighter center plate -->
+    <linearGradient id="plateGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="rgba(134,239,172,0.26)"></stop>
+      <stop offset="0.55" stop-color="rgba(99,208,143,0.22)"></stop>
+      <stop offset="1" stop-color="rgba(15,31,23,0.62)"></stop>
+    </linearGradient>
+
+    <!-- Rim stroke -->
+    <linearGradient id="rimGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="rgba(134,239,172,0.16)"></stop>
+      <stop offset="0.5" stop-color="rgba(63,164,106,0.14)"></stop>
+      <stop offset="1" stop-color="rgba(22,51,36,1)"></stop>
+    </linearGradient>
+  </defs>
+
+  <rect width="420" height="420" fill="transparent"></rect>
+
+  <!-- CHIP -->
+  <g transform="translate(60 60)">
+    <!-- body (square corners to emphasize pins) -->
+    <rect x="0" y="0" width="300" height="300" rx="6" fill="url(#chipGrad)" stroke="var(--border)" stroke-width="3"></rect>
+    <rect x="2" y="2" width="296" height="296" rx="5" fill="none" stroke="url(#rimGrad)" stroke-width="2" opacity="0.95"></rect>
+    <rect x="0" y="0" width="300" height="300" rx="6" fill="url(#scan)" opacity="0.95"></rect>
+
+    <!-- pins (lighter green, emphasized) -->
+    <g fill="var(--pin)" opacity="0.95">
+      <!-- top -->
+      <rect x="52" y="-12" width="18" height="24" rx="2"></rect>
+      <rect x="88" y="-12" width="18" height="24" rx="2"></rect>
+      <rect x="124" y="-12" width="18" height="24" rx="2"></rect>
+      <rect x="160" y="-12" width="18" height="24" rx="2"></rect>
+      <rect x="196" y="-12" width="18" height="24" rx="2"></rect>
+      <rect x="232" y="-12" width="18" height="24" rx="2"></rect>
+      <!-- bottom -->
+      <rect x="52" y="288" width="18" height="24" rx="2"></rect>
+      <rect x="88" y="288" width="18" height="24" rx="2"></rect>
+      <rect x="124" y="288" width="18" height="24" rx="2"></rect>
+      <rect x="160" y="288" width="18" height="24" rx="2"></rect>
+      <rect x="196" y="288" width="18" height="24" rx="2"></rect>
+      <rect x="232" y="288" width="18" height="24" rx="2"></rect>
+      <!-- left -->
+      <rect x="-12" y="52" width="24" height="18" rx="2"></rect>
+      <rect x="-12" y="88" width="24" height="18" rx="2"></rect>
+      <rect x="-12" y="124" width="24" height="18" rx="2"></rect>
+      <rect x="-12" y="160" width="24" height="18" rx="2"></rect>
+      <rect x="-12" y="196" width="24" height="18" rx="2"></rect>
+      <rect x="-12" y="232" width="24" height="18" rx="2"></rect>
+      <!-- right -->
+      <rect x="288" y="52" width="24" height="18" rx="2"></rect>
+      <rect x="288" y="88" width="24" height="18" rx="2"></rect>
+      <rect x="288" y="124" width="24" height="18" rx="2"></rect>
+      <rect x="288" y="160" width="24" height="18" rx="2"></rect>
+      <rect x="288" y="196" width="24" height="18" rx="2"></rect>
+      <rect x="288" y="232" width="24" height="18" rx="2"></rect>
+    </g>
+
+    <!-- pin shadow/definition (makes them pop without getting too bright) -->
+    <g fill="none" opacity="0.55">
+      <path d="M52 -12 v24 h18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M88 -12 v24 h18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M124 -12 v24 h18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M160 -12 v24 h18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M196 -12 v24 h18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M232 -12 v24 h18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+
+      <path d="M52 288 v24 h18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M88 288 v24 h18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M124 288 v24 h18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M160 288 v24 h18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M196 288 v24 h18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M232 288 v24 h18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+
+      <path d="M-12 52 h24 v18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M-12 88 h24 v18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M-12 124 h24 v18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M-12 160 h24 v18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M-12 196 h24 v18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M-12 232 h24 v18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+
+      <path d="M288 52 h24 v18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M288 88 h24 v18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M288 124 h24 v18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M288 160 h24 v18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M288 196 h24 v18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+      <path d="M288 232 h24 v18" stroke="rgba(5,12,9,0.65)" stroke-width="2"></path>
+    </g>
+
+    <!-- inner frames -->
+    <rect x="22" y="22" width="256" height="256" rx="10" fill="none" stroke="rgba(134,239,172,0.16)" stroke-width="3"></rect>
+    <rect x="36" y="36" width="228" height="228" rx="10" fill="rgba(7,15,11,0.80)" stroke="rgba(22,51,36,1)" stroke-width="2.4"></rect>
+
+    <!-- traces -->
+    <g fill="none" stroke-linecap="round" opacity="0.9">
+      <path d="M36 96 H12" stroke="rgba(63,164,106,0.42)" stroke-width="3"></path>
+      <path d="M36 150 H6" stroke="rgba(63,164,106,0.28)" stroke-width="3"></path>
+      <path d="M36 204 H12" stroke="rgba(63,164,106,0.42)" stroke-width="3"></path>
+
+      <path d="M264 96 H288" stroke="rgba(63,164,106,0.42)" stroke-width="3"></path>
+      <path d="M264 150 H294" stroke="rgba(63,164,106,0.28)" stroke-width="3"></path>
+      <path d="M264 204 H288" stroke="rgba(63,164,106,0.42)" stroke-width="3"></path>
+
+      <path d="M96 36 V12" stroke="rgba(63,164,106,0.42)" stroke-width="3"></path>
+      <path d="M150 36 V6" stroke="rgba(63,164,106,0.28)" stroke-width="3"></path>
+      <path d="M204 36 V12" stroke="rgba(63,164,106,0.42)" stroke-width="3"></path>
+
+      <path d="M96 264 V288" stroke="rgba(63,164,106,0.42)" stroke-width="3"></path>
+      <path d="M150 264 V294" stroke="rgba(63,164,106,0.28)" stroke-width="3"></path>
+      <path d="M204 264 V288" stroke="rgba(63,164,106,0.42)" stroke-width="3"></path>
+    </g>
+
+    <!-- CENTER PLATE -->
+    <g transform="translate(62 72)">
+      <rect x="0" y="0" width="176" height="156" rx="12" fill="url(#plateGrad)" stroke="rgba(22,51,36,1)" stroke-width="2.4"></rect>
+      <rect x="10" y="10" width="156" height="136" rx="10" fill="none" stroke="rgba(134,239,172,0.18)" stroke-width="2"></rect>
+
+      <!-- single centered x00 (larger + perfectly centered) -->
+      <!-- plate center is (88, 78). Use dominant-baseline + middle anchor to nail it. -->
+      <g class="mono" font-weight="700" text-anchor="middle" dominant-baseline="middle" filter="url(#softGlow)">
+        <!-- tiny print shadows (still one occurrence) -->
+        <text x="88" y="78" font-size="64" fill="rgba(63,164,106,0.20)" transform="translate(3,3)">x00</text>
+        <text x="88" y="78" font-size="64" fill="rgba(134,239,172,0.14)" transform="translate(-3,-2)">x00</text>
+        <!-- main -->
+        <text x="88" y="78" font-size="64" fill="rgba(231,243,234,0.78)">x00</text>
+        <!-- subtle outline -->
+        <text x="88" y="78" font-size="64" fill="none" stroke="rgba(134,239,172,0.18)" stroke-width="1.2">x00</text>
+      </g>
+
+      <!-- micro dots -->
+      <g opacity="0.9">
+        <circle cx="18" cy="18" r="3.3" fill="rgba(159,179,165,0.55)"></circle>
+        <circle cx="158" cy="18" r="3.3" fill="rgba(159,179,165,0.55)"></circle>
+        <circle cx="18" cy="138" r="3.3" fill="rgba(159,179,165,0.55)"></circle>
+        <circle cx="158" cy="138" r="3.3" fill="rgba(159,179,165,0.55)"></circle>
+      </g>
+    </g>
+
+    <!-- subtle inner glow ring -->
+    <rect x="36" y="36" width="228" height="228" rx="10" fill="none" stroke="rgba(63,164,106,0.18)" stroke-width="2" filter="url(#softGlow)"></rect>
+  </g>
+</svg>

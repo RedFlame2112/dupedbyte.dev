@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogList from '../../../components/BlogList.astro';
+import { getSortedPosts } from '../../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+  const tags = new Set(
+    posts
+      .map((post) => post.data.tags || [])
+      .flat()
+      .map((tag) => tag.toLowerCase())
+  );
+
+  return Array.from(tags).map((tag) => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+const posts = await getSortedPosts();
+const taggedPosts = posts.filter((post) => post.data.tags?.some((t) => t.toLowerCase() === tag));
+---
+
+<BaseLayout
+  title={`Posts tagged ${tag} — Sagnik Chakraborty`}
+  description={`All blog entries tagged with ${tag}.`}
+>
+  <section class="space-y-6">
+    <div class="space-y-2">
+      <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">Tag</p>
+      <h1 class="text-3xl font-semibold">#{tag}</h1>
+      <p class="text-[var(--muted)]">Posts filtered by tag.</p>
+    </div>
+    <BlogList posts={taggedPosts} />
+  </section>
+</BaseLayout>

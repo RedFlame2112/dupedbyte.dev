@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { projects } from '../data/projects';
+---
+
+<BaseLayout title="Projects — Sagnik Chakraborty" description="Selected projects and experiments by Sagnik Chakraborty.">
+  <section class="space-y-6">
+    <div class="flex items-center justify-between gap-3">
+      <div>
+        <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">Projects</p>
+        <h1 class="text-3xl font-semibold">Build log</h1>
+        <p class="text-[var(--muted)]">A mix of shipped work, research prototypes, and playgrounds worth sharing.</p>
+      </div>
+      <a class="hidden rounded-full border border-[var(--border)] px-5 py-3 text-sm font-semibold text-[var(--text)] transition hover:-translate-y-0.5 hover:border-[var(--accent)] hover:text-[var(--accent)] md:inline-flex" href="/resume.pdf">
+        Resume
+      </a>
+    </div>
+
+    <div class="grid gap-5 md:grid-cols-2">
+      {projects.map((project) => (
+        <a
+          href={project.link}
+          class="group flex h-full flex-col justify-between rounded-3xl border border-[var(--border)] bg-[var(--card)]/80 p-6 shadow-card transition hover:-translate-y-1.5 hover:border-[var(--accent)] hover:shadow-glow"
+        >
+          <div class="space-y-4">
+            <div class="flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-[var(--muted)]">
+              <span class="h-2 w-2 rounded-full bg-[var(--accent)] shadow-glow" />
+              {project.status ?? "Project"}
+            </div>
+            <h2 class="text-xl font-semibold group-hover:text-[var(--accent)]">{project.title}</h2>
+            <p class="text-[var(--muted)]">{project.summary}</p>
+          </div>
+          <div class="mt-6 flex flex-wrap gap-2 text-xs text-[var(--muted)]">
+            {project.stack.map((tech) => (
+              <span class="rounded-full border border-[var(--border)] px-3 py-1">{tech}</span>
+            ))}
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

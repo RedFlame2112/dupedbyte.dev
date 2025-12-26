@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Search | Sagnik Chakraborty" description="Search posts and filter by tags, difficulty, and year.">
+  <section class="space-y-6">
+    <div class="space-y-2">
+      <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">Search</p>
+      <h1 class="text-3xl font-semibold">Find a post</h1>
+      <p class="text-[var(--muted)]">Filters include tags, difficulty, and publication year once Pagefind has indexed the build.</p>
+    </div>
+    <div id="pagefind-search" class="rounded-3xl border border-[var(--border)] bg-[var(--card)]/70 p-4 shadow-card"></div>
+    <div id="pagefind-status" class="rounded-2xl border border-[var(--border)] bg-[var(--card)]/60 px-4 py-3 text-sm text-[var(--muted)]"></div>
+    <div class="rounded-3xl border border-[var(--border)] bg-[var(--card)]/70 p-4 shadow-card">
+      <h2 class="text-lg font-semibold text-[var(--text)]">Search tips</h2>
+      <ul class="mt-3 space-y-2 text-sm text-[var(--muted)]">
+        <li>Filter by tag (astro, search, design, security), difficulty (1–5), or year.</li>
+        <li>Try queries like "pagefind filters", "KaTeX", or "IDS".</li>
+        <li>Results sort by publish date by default; you can switch to title.</li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<script type="module">
+  const mount = async () => {
+    const status = document.querySelector('#pagefind-status');
+    const target = document.querySelector('#pagefind-search');
+    if (!target) return;
+    if (status) status.textContent = 'Loading search...';
+    try {
+      const cssId = 'pagefind-ui-css';
+      if (!document.getElementById(cssId)) {
+        const link = document.createElement('link');
+        link.id = cssId;
+        link.rel = 'stylesheet';
+        link.href = '/_pagefind/pagefind-ui.css';
+        document.head.appendChild(link);
+      }
+
+      await new Promise((resolve, reject) => {
+        if (window.PagefindUI) return resolve(window.PagefindUI);
+        const script = document.createElement('script');
+        script.src = '/_pagefind/pagefind-ui.js';
+        script.defer = true;
+        script.onload = () => resolve(window.PagefindUI);
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+
+      new window.PagefindUI({
+        element: target,
+        bundlePath: '/_pagefind/',
+        showImages: false,
+        showSubResults: true,
+        translations: { placeholder: 'Search posts...' },
+        filters: { tag: 'Tags', difficulty: 'Difficulty', year: 'Year' },
+        sort: {
+          weight: { title: 'Title', date: 'Publication date' },
+          default: 'date',
+          direction: 'desc'
+        }
+      });
+
+      if (status) status.textContent = 'Ready. Start typing or add filters.';
+    } catch (error) {
+      console.error('Pagefind UI failed to load', error);
+      if (status) {
+        status.textContent = 'Search index not available yet. Please try again soon.';
+      }
+    }
+  };
+
+  mount();
+</script>
