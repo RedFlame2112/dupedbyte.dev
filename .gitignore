@@ -13,13 +13,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# environment variables
+# environment variables 
 .env
-.env.production
-.env.local
-.env.development
-.env.test
+.env.*
 .dev.vars
+**/.env
+**/.env.*
+**/.dev.vars
 
 # cloudflare (wrangler local state)
 .wrangler/
