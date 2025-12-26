@@ -1,5 +1,6 @@
-// Ensure Pagefind assets are not excluded by _routes.json (Cloudflare Pages uses this for routing).
-// This script runs after build to remove any _pagefind exclusions so the index, filters, and wasm are served.
+// Ensure Pagefind assets are served statically on Cloudflare Pages.
+// The Cloudflare adapter emits _routes.json with "include: /*" and a list of static exclusions.
+// Pagefind needs to stay in the exclude list so it bypasses the worker and is served as static files.
 
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -18,16 +19,48 @@ try {
     process.exit(0);
   }
 
-  const before = data.exclude.length;
-  data.exclude = data.exclude.filter((entry) => !entry.startsWith('/_pagefind/'));
-  const after = data.exclude.length;
+  const needed = [
+    '/_pagefind/pagefind-entry.json',
+    '/_pagefind/pagefind-highlight.js',
+    '/_pagefind/pagefind-modular-ui.css',
+    '/_pagefind/pagefind-modular-ui.js',
+    '/_pagefind/pagefind-ui.css',
+    '/_pagefind/pagefind-ui.js',
+    '/_pagefind/pagefind.js',
+    '/_pagefind/wasm.en.pagefind',
+    '/_pagefind/wasm.unknown.pagefind'
+  ];
 
-  if (before !== after) {
-    writeFileSync(routesPath, JSON.stringify(data, null, 2));
-    console.log(`[fix-routes] Removed ${before - after} _pagefind exclusions`);
-  } else {
-    console.log('[fix-routes] No _pagefind exclusions found');
-  }
+  // Also ensure index/filter/fragment catch-alls are excluded from the worker
+  const prefixes = [
+    '/_pagefind/filter/',
+    '/_pagefind/index/',
+    '/_pagefind/fragment/'
+  ];
+
+  const excludeSet = new Set(data.exclude);
+  let added = 0;
+
+  needed.forEach((item) => {
+    if (!excludeSet.has(item)) {
+      excludeSet.add(item);
+      added += 1;
+    }
+  });
+
+  prefixes.forEach((prefix) => {
+    // If there is no explicit prefix entry, add one.
+    const hasPrefix = [...excludeSet].some((entry) => entry.startsWith(prefix));
+    if (!hasPrefix) {
+      excludeSet.add(`${prefix}*`);
+      added += 1;
+    }
+  });
+
+  data.exclude = [...excludeSet];
+
+  writeFileSync(routesPath, JSON.stringify(data, null, 2));
+  console.log(`[fix-routes] Ensured _pagefind assets are excluded from the worker (added ${added} entries if missing)`);
 } catch (error) {
   console.error('[fix-routes] Failed to adjust _routes.json', error);
   process.exit(1);

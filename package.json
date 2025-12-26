@@ -4,8 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev --host",
-    "build": "astro build && npx pagefind --site dist",
-    "postbuild": "node scripts/fix-routes.js",
+    "build": "astro build && npx pagefind --site dist --output-subdir _pagefind && node scripts/fix-routes.js",
     "preview": "astro preview --host",
     "astro": "astro",
     "dev:net": "npm run build && npx pagefind --site dist --output-path public/_pagefind && astro dev --host --port 3000",
