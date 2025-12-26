@@ -8,9 +8,9 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .slice(0, 3);
 
 const heroPoints = [
-  "Full-stack experimentation with TypeScript, Python, and a touch of math.",
-  "Writing in Markdown, shipped on Astro, tuned for Cloudflare Pages.",
-  "Exploring security, data pipelines, and visual storytelling."
+  "Security-minded systems development and experimenting with AI tooling and resilient infrastructure.",
+  "Writing in Markdown, shipped on Astro, deployed with Cloudflare Pages, integrated with Cloudflare analytics",
+  "Exploring simple, reproducible, and visual storytelling."
 ];
 
 const focus = [
@@ -89,7 +89,7 @@ const difficultyTone = (score: number) => {
       </div>
       <div class="rounded-3xl border border-[var(--border)] bg-[var(--card)]/80 p-7 shadow-card hover:-translate-y-1 transition-transform duration-300">
         <p class="text-sm uppercase tracking-[0.16em] text-[var(--muted)]">Signals</p>
-        <div class="mt-4 space-y-3 text-[var(--muted)]">
+        <div class="mt-4 space-y-3 text-[var(--muted)] signals-links">
           <p class="transition-colors hover:text-[var(--text)]">🔗 LinkedIn: <a class="text-[var(--accent)] transition-colors hover:text-[var(--accent-strong)] hover:underline" href="https://www.linkedin.com/in/sagnik-chakraborty2112/" target="_blank" rel="noreferrer">sagnik-chakraborty2112</a></p>
           <p class="transition-colors hover:text-[var(--text)]">📧 Email: <a class="text-[var(--accent)] transition-colors hover:text-[var(--accent-strong)] hover:underline" href="mailto:sagnikchakraborty212@gmail.com">sagnikchakraborty212@gmail.com</a></p>
           <p class="transition-colors hover:text-[var(--text)]">💻 GitHub: <a class="text-[var(--accent)] transition-colors hover:text-[var(--accent-strong)] hover:underline" href="https://github.com/RedFlame2112" target="_blank" rel="noreferrer">@RedFlame2112</a></p>
@@ -173,3 +173,28 @@ const difficultyTone = (score: number) => {
     )}
   </section>
 </BaseLayout>
+
+<style>
+  .signals-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.3rem;
+    border-radius: 10px;
+    transition: color 180ms ease, text-shadow 180ms ease, background-color 180ms ease;
+  }
+
+  .signals-links a:hover,
+  .signals-links a:focus-visible,
+  .signals-links a:active {
+    color: var(--text);
+    text-shadow: 0 0 10px rgba(231, 243, 234, 0.35);
+    background-color: rgba(231, 243, 234, 0.06);
+  }
+
+  @media (hover: none) {
+    .signals-links a {
+      touch-action: manipulation;
+    }
+  }
+</style>
